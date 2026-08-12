@@ -1,0 +1,12 @@
+{
+  "name": "codeyogi",
+  "owner": { "name": "CodeYogi Engineering" },
+  "plugins": [
+    {
+      "name": "whatsapp-crm",
+      "source": "./plugins/whatsapp-crm",
+      "description": "Shortlist WhatsApp chat exports for the CRM (pairs with the CodeYogi WhatsApp desktop app)",
+      "version": "1.0.0"
+    }
+  ]
+}
