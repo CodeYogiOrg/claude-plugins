@@ -124,6 +124,13 @@ Rules for that file:
   the `reason` when there is one.
 - **`evidence` is quoted messages** — one or two, enough for a human to disagree with you.
 - For a group entry, `members` carries the marked member list you judged on; otherwise `null`.
+- **A group entry's `reason` MUST name, as bare digits, the member or members you judge
+  strongest** — "918108431006 directs the blog content and is the strongest add here", not "the
+  person who directs blog content". `members` is `{phone, inCrm}` and carries no names or
+  ranking, so this mention is the ONLY per-member signal `schema: 1` can carry. The app's
+  Add-to-CRM checklist matches those digits to mark and sort the member rows; phrase the reason
+  without them and a five-person roster arrives as five identical-looking rows for a human to
+  guess between. Free text elsewhere, load-bearing here.
 - **Dropped chats are a count, not a list.**
 - Rank strongest first.
 
