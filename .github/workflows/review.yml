@@ -1,0 +1,57 @@
+name: PR review
+
+# CodeYogi's PR review, in every repo, from one definition. Everything this does lives
+# in CodeYogiOrg/review-standards — the trigger gate, the fork guard, the `@claude`
+# match, the reviewer itself — so a fix there reaches all 56 repos without a second
+# rollout. Pinned `@main` for exactly that reason; a sha pin would freeze this repo on
+# the day it was rolled out and nothing would say so.
+#
+# **Opt out with `rollout/rollback.sh <this-repo>`, which deletes this file AND is the
+# thing that reminds you to name the repo in `rollout/skip.txt`** — deleting it by hand
+# lasts only until the next rollout run, which cannot tell an opt-out from a fresh repo.
+# Do not edit it either: it is byte-identical everywhere and `rollout/rollout.sh` compares
+# it byte-for-byte to decide what to push, so a local edit reads to the rollout as "not
+# installed" and gets silently overwritten — and to the rollback as "not ours", which it
+# then refuses to delete. A repo that genuinely needs different behaviour is a change to
+# review-standards.
+#
+# It is also push-restricted org-wide (`.github/workflows/**`), because `pull_request`
+# runs the PR's OWN copy of a workflow: a branch that could rewrite this file could
+# hand the org's Claude credential to anything it liked before a human ever looked.
+#
+# Never make this a required check. A rate-limit hard-fail would block merging in 56
+# repos at once, which is a worse outage than not being reviewed.
+
+on:
+  # `opened` reviews; a push is `synchronize` and does NOT re-review — a second round
+  # comes from an `@claude` mention, which is what the two comment triggers are for.
+  #
+  # `synchronize` is subscribed anyway, and only the `disarm` job answers it: a push has
+  # to cancel a queued auto-merge, or an approval from round one lands whatever was
+  # pushed afterwards the moment CI goes green, reviewed by nobody.
+  pull_request:
+    types: [opened, synchronize]
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+  # `merge-when-green` only, and a no-op until `main` joins the merge allowlist. It is
+  # subscribed NOW because adding a trigger later means editing this file in every repo
+  # again — the one thing pinning `@main` was supposed to make unnecessary.
+  #
+  # It costs a workflow run per completed check suite, whose jobs all skip. If that noise
+  # is unwelcome before `main` is on the allowlist, deleting these two lines is the whole
+  # opt-out, and re-adding them is the same rollout that would have been needed anyway.
+  check_suite:
+    types: [completed]
+
+jobs:
+  review:
+    uses: CodeYogiOrg/review-standards/.github/workflows/review.yml@main
+    # NOT `secrets: inherit`. Inherit passes the CALLER's secrets, which is the org's
+    # three plus whatever this repo holds — 21 of them in `admin-be` — and hands the lot
+    # to a workflow defined in another repo. These three are what the reviewer uses.
+    secrets:
+      CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      REVIEWER_APP_ID: ${{ secrets.REVIEWER_APP_ID }}
+      REVIEWER_APP_PRIVATE_KEY: ${{ secrets.REVIEWER_APP_PRIVATE_KEY }}
