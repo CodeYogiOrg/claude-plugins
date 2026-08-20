@@ -6,7 +6,7 @@
       "name": "whatsapp-crm",
       "source": "./plugins/whatsapp-crm",
       "description": "Shortlist WhatsApp chat exports for the CRM (pairs with the CodeYogi WhatsApp desktop app)",
-      "version": "1.0.0"
+      "version": "1.1.0"
     }
   ]
 }
