@@ -23,27 +23,14 @@ name: PR review
 # repos at once, which is a worse outage than not being reviewed.
 
 on:
-  # `opened` reviews; a push is `synchronize` and does NOT re-review — a second round
-  # comes from an `@claude` mention, which is what the two comment triggers are for.
-  #
-  # `synchronize` is subscribed anyway, and only the `disarm` job answers it: a push has
-  # to cancel a queued auto-merge, or an approval from round one lands whatever was
-  # pushed afterwards the moment CI goes green, reviewed by nobody.
+  # `opened` reviews; a push does NOT re-review — a second round comes from an `@claude`
+  # mention, which is what the two comment triggers are for.
   pull_request:
-    types: [opened, synchronize]
+    types: [opened]
   issue_comment:
     types: [created]
   pull_request_review_comment:
     types: [created]
-  # `merge-when-green` only, and a no-op until `main` joins the merge allowlist. It is
-  # subscribed NOW because adding a trigger later means editing this file in every repo
-  # again — the one thing pinning `@main` was supposed to make unnecessary.
-  #
-  # It costs a workflow run per completed check suite, whose jobs all skip. If that noise
-  # is unwelcome before `main` is on the allowlist, deleting these two lines is the whole
-  # opt-out, and re-adding them is the same rollout that would have been needed anyway.
-  check_suite:
-    types: [completed]
 
 jobs:
   review:
