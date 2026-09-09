@@ -160,6 +160,30 @@ messages, dropped candidates as a COUNT not a list, strongest first — is uncha
 entry passes through the existing flattening step untouched, which is the point of keeping the
 shape.
 
+### Then take everyone else who was on those threads
+
+Judge first, as above. Then, for **every thread that produced an entry**, emit an entry for each
+remaining outside address on it — the silent cc's, the colleagues, the schedulers. Removing a row
+costs the operator a click; a person who never surfaced costs them the relationship. So the
+judgement decides what is RANKED, not who is LISTED.
+
+- Curated entries come first, strongest first, exactly as judged.
+- Then the companions, each next to whoever it rode in on.
+- **A mass cc goes last.** A mail sent to a dozen or more outside addresses at once is a list, not
+  a conversation, and its passengers rank below every other companion however strong the one
+  correspondent on it was.
+- A companion's `reason` MUST name the thread and the shortlisted person it came in on, say
+  whether they ever wrote, and end with the fact that it is riding in and can be removed. For a
+  mass cc, say how many recipients that mail went to.
+- Where there IS evidence about a companion — thanked by name, assigned a role, named for a call —
+  write that instead of the boilerplate. A silent person the operator's own words credit with
+  something is not the same as a bare cc line, and the reason is where that difference lives.
+- `counts` gains `shortlistedCurated` and `shortlistedThreadCompanions`; `shortlisted` stays the
+  total of both.
+
+Threads that produced no entry pull in nobody. A student's support ticket, a job application and a
+newsletter blast still drop, and still as a count.
+
 ## Write the shortlist
 
 `shortlist-YYYY-MM-DD.json`, beside the export (for a mail export that means the downloads
@@ -208,10 +232,14 @@ Rules for that file:
   without them and a five-person roster arrives as five identical-looking rows for a human to
   guess between. Free text elsewhere, load-bearing here.
 - **Dropped chats are a count, not a list.**
-- Rank strongest first.
+- Rank strongest first. For a mail export that means curated people, then companions, then mass-cc
+  passengers, and `counts` splits the total into `shortlistedCurated` and
+  `shortlistedThreadCompanions`.
 
 Then tell the user, in the chat, how many you shortlisted and where the file is. Do not paste the
-whole shortlist as prose.
+whole shortlist as prose. For a mail export, give the curated and companion counts separately —
+"29 people, plus 65 riding in on their threads" — so the operator knows how much of that file is
+a judgement and how much is a click away from being deleted.
 
 **A run that shortlists nobody is a real answer.** Say so plainly — "read 214 threads, nobody
 worth adding" — and still write the file with `entries: []`. Silence, or an unexplained empty
